@@ -4,7 +4,6 @@ set -e
 
 args=("$@")
 open_browser=false
-do_install=false
 
 # Handle SIGINT and SIGTERM
 cleanup() {
@@ -18,9 +17,6 @@ trap cleanup SIGINT SIGTERM
 while ((${#args[@]})); do
     arg="${args[0]}"
     case "$arg" in
-        i)
-            do_install=true
-            ;;
         o)
             open_browser=true
             ;;
@@ -31,19 +27,10 @@ while ((${#args[@]})); do
     args=("${args[@]:1}")
 done
 
-if $do_install; then
-    echo "Updating pip..."
-    python3 -m pip install --upgrade pip
-
-    echo "Installing dependencies from requirements.txt..."
-    pip install -r requirements.txt
-
-    echo "Initial setup completed."
-fi
 
 # start the FastAPI + check if uvicorn has active process
 echo "Starting the FastAPI application..."
-uvicorn main:app --reload 
+uvicorn app.main:app --reload 
 
 if $open_browser; then
     echo "Opening the application in the web browser..."

@@ -1,3 +1,7 @@
 fastapi 
 uvicorn
 uvicorn[standard] # autoreload, only for development
+
+# EXTRAS
+pydantic
+sqlalchemy

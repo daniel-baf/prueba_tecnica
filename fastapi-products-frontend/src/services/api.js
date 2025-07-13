@@ -17,7 +17,7 @@ export async function fetchCreateProduct(data) {
   if (!data) {
     throw new Error("Product data is required");
   }
-  const response = await fetch(`${API_BASE_URL}/create/`, {
+  const response = await fetch(`${API_BASE_URL}/products/create/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

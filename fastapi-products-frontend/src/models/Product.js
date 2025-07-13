@@ -6,3 +6,5 @@ export default class Product {
     this.price = price;
   }
 }
+
+// NOTE> not used, but kept for reference

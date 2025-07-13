@@ -4,17 +4,20 @@ import { ProductContext } from "../../context/ProductContext";
 import { useState } from "react";
 
 function EditButton({ onClick, product_id }) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); // to display or hide the modal
   const [editValues, setEditValues] = useState({
+    // tmp values to edit in the modal
     name: "",
     price: "",
     description: "",
     stock: 0,
   });
 
+  // the products & functions in the context, so keep the hook running automatically
   const { products, updateProduct } = useContext(ProductContext);
   const product = products.find((p) => p.id === product_id);
 
+  // display the modal, update the state + set the new value to edit
   const onDisplayEditModal = () => {
     setEditValues({
       name: product?.name || "",
@@ -25,19 +28,25 @@ function EditButton({ onClick, product_id }) {
     setIsModalOpen(true);
   };
 
+  // handle the change in the input fields
+  // do not alter the original product object, just the state of the modal (html)
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target; // input names
     setEditValues((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
 
+  // call the context on click to change the context on all components
+  // and close the modal
   const handleSubmit = (e) => {
     e.preventDefault();
     updateProduct(product_id, editValues);
     setIsModalOpen(false);
   };
+
+  
   return (
     <>
       {/* modal */}

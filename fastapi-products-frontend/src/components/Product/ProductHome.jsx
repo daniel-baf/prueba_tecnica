@@ -1,37 +1,37 @@
+import { useContext } from "react";
 import ProductList from "./ProductList";
+import { ProductContext } from "../../context/ProductContext";
 
-const ProductHome = ({ products }) => {
-  // Usa un contenedor más grande en pantallas pequeñas y uno más pequeño en pantallas medianas y grandes
+const ProductHome = () => {
+  const { createProduct } = useContext(ProductContext);
+  const { products } = useContext(ProductContext);
+
+  // on click, extract the values from the form, must be a better way to 2 way bind the form, but idk rn
+  // then call the context to create the product and the hook will update the products automatically
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const newProduct = {
+      name: formData.get("name"),
+      description: formData.get("description"),
+      price: parseFloat(formData.get("price")),
+      stock: parseInt(formData.get("stock"), 10),
+    };
+    // Call the createProduct function from context to add the new product
+    const response = await createProduct(newProduct);
+    if (!response) {
+      console.error("Failed to create product");
+      return;
+    }
+    e.target.reset(); // Reset the form after submission
+  };
+
+  // HTML
   return (
     <div className="w-full container mx-auto px-4 py-6">
       <form
         className="max-w-4xl mx-auto mb-10 p-6 bg-white shadow-lg rounded-xl flex flex-col gap-5"
-        onSubmit={async (e) => {
-          e.preventDefault();
-          const form = e.target;
-          const name = form.name.value.trim();
-          const description = form.description.value.trim();
-          const price = parseFloat(form.price.value);
-          const stock = parseInt(form.stock.value, 10);
-
-          if (!name || !description || isNaN(price) || isNaN(stock)) {
-            alert("Please fill in all fields correctly.");
-            return;
-          }
-
-          const response = await fetch("/api/products", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name, description, price, stock }),
-          });
-
-          if (response.ok) {
-            form.reset();
-            window.location.reload(); // Or trigger state update
-          } else {
-            alert("Failed to create product.");
-          }
-        }}
+        onSubmit={onSubmit}
       >
         <h2 className="text-2xl font-bold mb-4 text-center">Add New Product</h2>
 
@@ -79,7 +79,7 @@ const ProductHome = ({ products }) => {
       </form>
 
       <hr className="my-4 border-t-2 border-gray-200" />
-
+      {/* component */}
       <ProductList products={products} />
     </div>
   );

@@ -1,5 +1,7 @@
 import ProductButtonsHub from "./ProductButtonsHub";
 
+// This component displays a single product item
+// It includes the product details and buttons for editing and deleting the product
 const ProductItem = ({ product }) => {
   return (
     <li>
@@ -25,6 +27,9 @@ const ProductItem = ({ product }) => {
   );
 };
 
+
+// This component displays a list of products as an unordered list
+// It maps over the products array and renders a ProductItem for each product
 const ProductList = ({ products }) => {
   // Usa un contenedor más grande en pantallas pequeñas y uno más pequeño en pantallas medianas y grandes
   return (

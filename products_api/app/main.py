@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
 from app.db.session import engine, SessionLocal, Base
@@ -7,6 +8,16 @@ from app.models.product import Product
 
 app = FastAPI()
 
+# middleware and CORS settings can be added here if needed
+# TODO: remove the * from allow_origins in production
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 Base.metadata.create_all(bind=engine)  # Create the database tables if they do not exist
 
 
@@ -14,6 +25,7 @@ Base.metadata.create_all(bind=engine)  # Create the database tables if they do n
 # Drop all tables and recreate them
 Base.metadata.drop_all(bind=engine)
 Base.metadata.create_all(bind=engine)
+
 
 def seed_database():
     db: Session = SessionLocal()
@@ -27,6 +39,7 @@ def seed_database():
         db.commit()
         print("[INFO] Sample products added.")
     db.close()
+
 
 seed_database()
 

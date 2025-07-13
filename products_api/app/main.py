@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from app.db.session import engine, SessionLocal, Base
 from app.api.alpha.endpoints import products
 from app.models.product import Product
+import random
 
 app = FastAPI()
 
@@ -31,9 +32,24 @@ def seed_database():
     db: Session = SessionLocal()
     if db.query(Product).first() is None:
         sample_products = [
-            Product(name="Laptop", description="14-inch ultrabook", price=999.99),
-            Product(name="Mouse", description="Wireless optical mouse", price=29.99),
-            Product(name="Monitor", description="24-inch FHD monitor", price=159.50),
+            Product(
+                name="Laptop",
+                description="14-inch ultrabook",
+                price=399.99,
+                stock=random.randint(10, 100),
+            ),
+            Product(
+                name="Mouse",
+                description="Wireless optical mouse",
+                price=29.99,
+                stock=random.randint(10, 100),
+            ),
+            Product(
+                name="Monitor",
+                description="24-inch FHD monitor",
+                price=159.50,
+                stock=random.randint(10, 100),
+            ),
         ]
         db.add_all(sample_products)
         db.commit()

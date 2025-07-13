@@ -5,6 +5,7 @@ class ProductBase(BaseModel):
     name: str
     description: str
     price: float
+    stock: int
 
 # pass, 'cause no changes or items optionals on creation
 class ProductCreate(ProductBase):

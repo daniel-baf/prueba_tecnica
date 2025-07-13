@@ -13,3 +13,4 @@ class Product(Base):
     name = Column(String, index=True)
     price = Column(Numeric(10, 2))
     description = Column(String)
+    stock = Column(Integer)
